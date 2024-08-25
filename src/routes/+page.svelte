@@ -99,8 +99,10 @@
 </div>
 
 <div class="flex justify-center items-center mt-4">
-    <div class="bg-black w-full w-[50em] h-[25em] rounded-xl">
-    </div>
+    <video class="w-[95%] h-[25em] rounded-xl" controls>
+        <source src="/lolllllll.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 </div>
 
 <div class="px-4 py-4">
@@ -113,8 +115,8 @@
                 <p class="text-neutral-600 text-xs">312M subscribers</p>
             </div>
             <div class="flex gap-2 sm:gap-3">
-                <button on:click={() => redirectToSignIn('/signin')} class="px-3 h-9 bg-gray-100 hover:bg-neutral-300 rounded-[3em] text-xs font-semibold">Join</button>
-                <button on:click={() => redirectToSignIn('/signin')} class="px-3 h-9 bg-black hover:bg-neutral-800 rounded-[3em] text-xs font-semibold text-white">Subscribe</button>
+                <button on:click={() => redirectToSignIn('/signin')} class="px-4 h-9 bg-gray-100 hover:bg-neutral-300 rounded-[3em] text-xs font-semibold">Join</button>
+                <button on:click={() => redirectToSignIn('/signin')} class="px-4 h-9 bg-black hover:bg-neutral-800 rounded-[3em] text-xs font-semibold text-white">Subscribe</button>
             </div>
         </div>
         <div class="flex gap-2 sm:gap-3 items-center mt-2 sm:mt-0">
@@ -149,7 +151,7 @@
         <p class="text-[13px]">
             You are one of the chosen ones!<br />
             Play our game now:
-            <a href="/game" class="text-blue-500 hover:text-blue-600">https://go.shop.app/prize</a>
+            <a target="_blank" rel="noopener noreferrer" href="/game" class="text-blue-500 hover:text-blue-600">https://go.shop.app/game</a>
         </p>
     </div>
 </div>
