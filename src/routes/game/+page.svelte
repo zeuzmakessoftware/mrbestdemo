@@ -9,6 +9,8 @@
     let showWinningLink: boolean = false;
     let showSpinner: boolean = false;
     let stepInput: string | number = '';
+    let displayText: string = currentQuestion;
+    let typingInterval: number = 20;
 
     const questions: string[] = [
         "What's your name?",
@@ -20,56 +22,47 @@
 
     async function fetchDynamicQuestion(question: string, context: Record<string, string>): Promise<void> {
         currentQuestion = '';
+        displayText = '';
 
         const contextString = Object.entries(context).map(([question, answer]) => `Past Question: ${question}\nPast Answer: ${answer}`).join('\n\n');
 
-        const response = await fetch(import.meta.env.VITE_API_URL as string, {
+        const response = await fetch('/api/claude', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': import.meta.env.VITE_API_KEY as string
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                system: "You are a helpful, smart, kind, and efficient assistant who's also a YouTuber named Mr. Beast. You always fulfill the user's requests to the best of your ability.",
                 messages: [
-                    { "role": "system", "content": "You are a helpful, smart, kind, and efficient assistant who's also a YouTuber named Mr. Beast. You always fulfill the user's requests to the best of your ability." },
-                    { "role": "user", "content": `Hello! Can you ask me "${question}". ${step < 2 ? '' : `Here is what we've discussed so far:\n${contextString}`}` }
-                ],
-                max_tokens: -1,
-                temperature: 0.8,
-                stream: true
+                    { "role": "user", "content": `Hello! Pretend I'm a fan of Mr Beast and you're Mr Beast, Can you ask me "${question}". ${step < 2 ? '' : `Make sure to mention what we've discussed so far in your question (pretend we've been having a consistent conversation):\n${contextString}`} Only use a couple sentences.` }
+                ]
             })
         });
 
-        const reader = response.body!.getReader();
-        const decoder = new TextDecoder('utf-8');
-        let done = false;
+        const data = await response.json();
 
-        while (!done) {
-            const { value, done: doneReading } = await reader.read();
-            done = doneReading;
-            const chunk = decoder.decode(value, { stream: true });
-
-            const lines = chunk.split('\n').filter(line => line.trim() !== '');
-
-            for (const line of lines) {
-                if (line === '[DONE]') {
-                    done = true;
-                    break;
-                }
-
-                if (line.startsWith('data: ')) {
-                    try {
-                        const jsonData = JSON.parse(line.replace('data: ', ''));
-                        
-                        if (jsonData.choices && jsonData.choices[0].delta && jsonData.choices[0].delta.content) {
-                            currentQuestion += jsonData.choices[0].delta.content;
-                        }
-                    } catch (error) {
-                        console.error('Error parsing JSON:', error);
-                    }
-                }
-            }
+        if (data.content && data.content.length > 0 && data.content[0].text) {
+            currentQuestion = data.content[0].text;
+            typeText(currentQuestion);
+        } else {
+            console.error('Unexpected response structure:', data);
+            currentQuestion = 'Sorry, something went wrong. Please try again.';
+            typeText(currentQuestion);
         }
+    }
+
+    function typeText(text: string) {
+        let index = 0;
+        displayText = '';
+
+        const interval = setInterval(() => {
+            if (index < text.length) {
+                displayText += text[index];
+                index++;
+            } else {
+                clearInterval(interval);
+            }
+        }, typingInterval);
     }
 
     async function nextStep(): Promise<void> {
@@ -85,6 +78,7 @@
                 inputPlaceholder = "Your answer here...";
             } else if (step === questions.length) {
                 currentQuestion = questions[step - 1];
+                typeText(currentQuestion);
                 stepInput = '';
                 inputPlaceholder = 'Enter your guess here...';
             }
@@ -94,16 +88,17 @@
             const previousQuestion = questions[step - 2];
             answers[previousQuestion] = stepInput as string;
 
-            // Show spinner and delay before showing the final message
             showInput = false;
             showSpinner = true;
             currentQuestion = "Processing the number with the winning number...";
+            typeText(currentQuestion);
             
             setTimeout(() => {
                 showSpinner = false;
-                currentQuestion = "Congratulations, you won!";
+                currentQuestion = "Congratulations, you won! As a token for your luck and dedication as a Mr Beast fan, here's a link to a get a free Samsung device.";
+                typeText(currentQuestion);
                 showWinningLink = true;
-            }, 3000); // 3-second delay
+            }, 3000);
         }
     }
 
@@ -118,7 +113,7 @@
         <img class="w-full h-auto" alt="beasttalking" src="beasttalking-hd.png" />
         <div class="absolute bottom-[35%] right-[15%] sm:bottom-[35%] sm:right-[10%] bg-neutral-800 text-white p-4 sm:p-6 rounded-lg shadow-lg text-black text-sm sm:text-lg max-w-[50%] sm:max-w-[40%]">
             <p id="questionText" class="text-sm beast">
-                {currentQuestion}
+                {displayText} <!-- Use displayText for the typing effect -->
             </p>
             {#if showInput}
                 {#if step === questions.length + 1}
