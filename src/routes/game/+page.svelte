@@ -14,7 +14,7 @@
     let isTypingComplete: boolean = true;
 
     const questions: string[] = [
-        "What's is my name?",
+        "What is your name?",
         //"What's your favorite activity to do?",
         //"If you could collaborate with any internet personality, who would it be?",
         "What's your favorite Mr. Beast video?",
@@ -36,7 +36,7 @@
             body: JSON.stringify({
                 system: "You are Mr. Beast, a popular YouTuber. Respond directly and concisely as Mr. Beast would, without any meta-commentary about your tone or role. Keep your answers brief and to the point. If you find yourself saying something that should be in a script like nonverbal cues, do not say it.",
                 messages: [
-                    { "role": "user", "content": `Pretend I'm a fan of Mr Beast that has made it to your website. Pretend you're Mr Beast and not a Mr Beast fan. Can you ask me "${question}" in the words of Mr Beast, but, don't act like I asked the question. Do not express any nonverbal cues. ${step < 2 ? '' : `Make sure to mention what we've discussed so far in your question (pretend we've been having a consistent conversation but don't mention the word conversation). Do not greet me at this point.:\n${contextString}`} Only use a couple sentences.` }
+                    { "role": "user", "content": `Pretend I'm a fan of Mr Beast that has made it to your website. Pretend you're Mr Beast and not a Mr Beast fan. Can you ask me "${question}" in the words of Mr Beast, but, don't act like I asked the question. Do not express any nonverbal cues. ${step < 2 ? '' : `Make sure to mention what we've discussed so far in your question (pretend we've been having a consistent conversation). Do not greet me at this point.:\n${contextString}`} Only use a couple sentences.` }
                 ]
             })
         });
@@ -109,6 +109,7 @@
                 typeText(currentQuestion);
                 showWinningLink = true;
             }, 3000);
+            step++;
         }
     }
 
