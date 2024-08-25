@@ -11,6 +11,7 @@
     let stepInput: string | number = '';
     let displayText: string = currentQuestion;
     let typingInterval: number = 20;
+    let isTypingComplete: boolean = true;
 
     const questions: string[] = [
         "What's your name?",
@@ -23,6 +24,7 @@
     async function fetchDynamicQuestion(question: string, context: Record<string, string>): Promise<void> {
         currentQuestion = '';
         displayText = '';
+        isTypingComplete = false;
 
         const contextString = Object.entries(context).map(([question, answer]) => `Past Question: ${question}\nPast Answer: ${answer}`).join('\n\n');
 
@@ -54,6 +56,7 @@
     function typeText(text: string) {
         let index = 0;
         displayText = '';
+        isTypingComplete = false;
 
         const interval = setInterval(() => {
             if (index < text.length) {
@@ -61,8 +64,15 @@
                 index++;
             } else {
                 clearInterval(interval);
+                isTypingComplete = true;
             }
         }, typingInterval);
+    }
+
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            nextStep();
+        }
     }
 
     async function nextStep(): Promise<void> {
@@ -113,19 +123,21 @@
         <img class="w-full h-auto" alt="beasttalking" src="beasttalking-hd.png" />
         <div class="absolute bottom-[35%] right-[15%] sm:bottom-[35%] sm:right-[10%] bg-neutral-800 text-white p-4 sm:p-6 rounded-lg shadow-lg text-black text-sm sm:text-lg max-w-[50%] sm:max-w-[40%]">
             <p id="questionText" class="text-sm beast">
-                {displayText} <!-- Use displayText for the typing effect -->
+                {displayText}
             </p>
-            {#if showInput}
+            {#if showInput && isTypingComplete}
                 {#if step === questions.length + 1}
-                    <input type="number" bind:value={stepInput} placeholder={inputPlaceholder} class="text-black w-full mt-4 p-2 rounded" min="1" max="10000">
+                    <input type="number" on:keydown={handleKeydown} bind:value={stepInput} placeholder={inputPlaceholder} class="text-black w-full mt-4 p-2 rounded" min="1" max="10000">
                 {:else}
-                    <input type="text" bind:value={stepInput} placeholder={inputPlaceholder} class="text-black w-full mt-4 p-2 rounded">
+                    <input type="text" on:keydown={handleKeydown} bind:value={stepInput} placeholder={inputPlaceholder} class="text-black w-full mt-4 p-2 rounded">
                 {/if}
             {/if}
             {#if showSpinner}
                 <div class="spinner mt-4"></div>
             {/if}
-            <button class="float-right bg-blue-500 rounded-xl p-4 mt-4" on:click={nextStep} disabled={showSpinner}>Next</button>
+            {#if isTypingComplete}
+                <button class="float-right bg-blue-500 rounded-xl p-4 mt-4" on:click={nextStep} disabled={showSpinner}>Next</button>
+            {/if}
             {#if showWinningLink}
                 <a href="/signin" target="_blank" class="mt-4 text-sm text-blue-400 hover:text-blue-500 underline">I need to check if you're subscribed so log in to prove your a MrBeast fan.</a>
             {/if}
