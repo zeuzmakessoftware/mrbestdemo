@@ -14,11 +14,11 @@
     let isTypingComplete: boolean = true;
 
     const questions: string[] = [
-        "What's your name?",
-        "What's your favorite activity to do?",
-        "If you could collaborate with any internet personality, who would it be?",
+        "What's is my name?",
+        //"What's your favorite activity to do?",
+        //"If you could collaborate with any internet personality, who would it be?",
         "What's your favorite Mr. Beast video?",
-        "Guess a number between 1 and 10,000."
+        "Please guess a number between 1 and 10,000"
     ];
 
     async function fetchDynamicQuestion(question: string, context: Record<string, string>): Promise<void> {
@@ -34,9 +34,9 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                system: "You are a helpful, smart, kind, and efficient assistant who's also a YouTuber named Mr. Beast. You always fulfill the user's requests to the best of your ability.",
+                system: "You are Mr. Beast, a popular YouTuber. Respond directly and concisely as Mr. Beast would, without any meta-commentary about your tone or role. Keep your answers brief and to the point. If you find yourself saying something that should be in a script like nonverbal cues, do not say it.",
                 messages: [
-                    { "role": "user", "content": `Hello! Pretend I'm a fan of Mr Beast and you're Mr Beast, Can you ask me "${question}". ${step < 2 ? '' : `Make sure to mention what we've discussed so far in your question (pretend we've been having a consistent conversation):\n${contextString}`} Only use a couple sentences.` }
+                    { "role": "user", "content": `Pretend I'm a fan of Mr Beast that has made it to your website. Pretend you're Mr Beast and not a Mr Beast fan. Can you ask me "${question}" in the words of Mr Beast, but, don't act like I asked the question. Do not express any nonverbal cues. ${step < 2 ? '' : `Make sure to mention what we've discussed so far in your question (pretend we've been having a consistent conversation but don't mention the word conversation). Do not greet me at this point.:\n${contextString}`} Only use a couple sentences.` }
                 ]
             })
         });
@@ -100,12 +100,12 @@
 
             showInput = false;
             showSpinner = true;
-            currentQuestion = "Processing the number with the winning number...";
+            currentQuestion = "Processing your submission...";
             typeText(currentQuestion);
             
             setTimeout(() => {
                 showSpinner = false;
-                currentQuestion = "Congratulations, you won! As a token for your luck and dedication as a Mr Beast fan, here's a link to a get a free Samsung device.";
+                currentQuestion = "Congratulations, you picked the winning number! As a token for your luck and dedication as a Mr Beast fan, here's a link to a get a free Samsung device.";
                 typeText(currentQuestion);
                 showWinningLink = true;
             }, 3000);
@@ -121,7 +121,7 @@
     </div>
     <div class="mt-auto relative">
         <img class="w-full h-auto" alt="beasttalking" src="beasttalking-hd.png" />
-        <div class="absolute bottom-[35%] right-[15%] sm:bottom-[35%] sm:right-[10%] bg-neutral-800 text-white p-4 sm:p-6 rounded-lg shadow-lg text-black text-sm sm:text-lg max-w-[50%] sm:max-w-[40%]">
+        <div class="absolute bottom-[15%] right-[15%] sm:bottom-[40%] sm:right-[10%] bg-neutral-800 text-white p-4 sm:p-6 rounded-lg shadow-lg text-black text-sm sm:text-lg max-w-[50%] sm:max-w-[40%]">
             <p id="questionText" class="text-sm beast">
                 {displayText}
             </p>
@@ -135,7 +135,7 @@
             {#if showSpinner}
                 <div class="spinner mt-4"></div>
             {/if}
-            {#if isTypingComplete}
+            {#if (stepInput != '' || step === 1) && step != questions.length + 2 && isTypingComplete}
                 <button class="float-right bg-blue-500 rounded-xl p-4 mt-4" on:click={nextStep} disabled={showSpinner}>Next</button>
             {/if}
             {#if showWinningLink}
