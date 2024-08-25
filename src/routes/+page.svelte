@@ -30,6 +30,10 @@
     function toggleMobileSearch() {
         isMobileSearchActive = !isMobileSearchActive;
     }
+
+    function redirectToSignIn(url: string) {
+        window.location.href = url;
+    }
 </script>
 
 <div class="w-full h-14 flex justify-between items-center px-4 sm:px-6">
@@ -87,9 +91,9 @@
     </div>
     <div class="flex gap-2 items-center">
         <PhDotsThreeVertical font-size={20} />
-        <button class="flex gap-1 items-center px-3 py-[6px] border-[1px] border-neutral-300 rounded-[3em]">
+        <button on:click={() => redirectToSignIn('/signin')} class="flex gap-1 items-center px-3 py-[6px] border-[1px] border-neutral-300 rounded-[3em]">
             <PhUserCircleLight font-size={20} color={"RoyalBlue"} />
-            <p class="text-xs font-bold text-blue-600">Sign in</p>
+            <p class="text-xs font-bold text-blue-600" >Sign in</p>
         </button>
     </div>
 </div>
@@ -103,36 +107,36 @@
     <h1 class="text-lg sm:text-xl text-black font-bold">This Video Will Selfdestruct In One Hour!</h1>
     <div class="flex flex-col sm:flex-row justify-between items-start my-2">
         <div class="flex gap-3 items-center">
-            <img class="w-10 h-10 rounded-[3em]" src="https://yt3.ggpht.com/fxGKYucJAVme-Yz4fsdCroCFCrANWqw0ql4GYuvx8Uq4l_euNJHgE-w9MTkLQA805vWCi-kE0g=s88-c-k-c0x00ffffff-no-rj" />
+            <img class="w-10 h-10 rounded-[3em]" alt="mrbeast" src="https://yt3.ggpht.com/fxGKYucJAVme-Yz4fsdCroCFCrANWqw0ql4GYuvx8Uq4l_euNJHgE-w9MTkLQA805vWCi-kE0g=s88-c-k-c0x00ffffff-no-rj" />
             <div>
                 <h3 class="text-black text-sm font-semibold">MrBeast</h3>
                 <p class="text-neutral-600 text-xs">312M subscribers</p>
             </div>
             <div class="flex gap-2 sm:gap-3">
-                <button class="px-3 h-9 bg-gray-100 hover:bg-neutral-300 rounded-[3em] text-xs font-semibold">Join</button>
-                <button class="px-3 h-9 bg-black hover:bg-neutral-800 rounded-[3em] text-xs font-semibold text-white">Subscribe</button>
+                <button on:click={() => redirectToSignIn('/signin')} class="px-3 h-9 bg-gray-100 hover:bg-neutral-300 rounded-[3em] text-xs font-semibold">Join</button>
+                <button on:click={() => redirectToSignIn('/signin')} class="px-3 h-9 bg-black hover:bg-neutral-800 rounded-[3em] text-xs font-semibold text-white">Subscribe</button>
             </div>
         </div>
         <div class="flex gap-2 sm:gap-3 items-center mt-2 sm:mt-0">
             <div class="flex items-center bg-gray-100 rounded-full">
-                <button class="flex items-center justify-center w-24 h-9 hover:bg-gray-200 rounded-l-full transition-colors">
+                <button on:click={() => redirectToSignIn('/signin')} class="flex items-center justify-center w-24 h-9 hover:bg-gray-200 rounded-l-full transition-colors">
                     <PhThumbsUpThin font-size={18} />
-                    <span class="text-black font-medium mx-2 text-sm">6.2M</span>
+                    <span class="text-black font-medium mx-2 text-sm">90.2K</span>
                 </button>
                 <div class="border-r border-gray-400 h-6"></div>
-                <button class="flex items-center justify-center w-11 h-9 hover:bg-gray-200 rounded-r-full transition-colors">
+                <button on:click={() => redirectToSignIn('/signin')} class="flex items-center justify-center w-11 h-9 hover:bg-gray-200 rounded-r-full transition-colors">
                     <PhThumbsDownThin font-size={18} />
                 </button>
             </div>
-            <button class="px-3 h-9 bg-gray-100 hover:bg-gray-200 rounded-[3em] text-xs font-semibold flex items-center gap-1">
+            <button on:click={() => redirectToSignIn('/signin')} class="px-3 h-9 bg-gray-100 hover:bg-gray-200 rounded-[3em] text-xs font-semibold flex items-center gap-1">
                 <PhShareFatLight font-size={18} />
                 Share
             </button>
-            <button class="px-3 h-9 bg-gray-100 hover:bg-gray-200 rounded-[3em] text-xs font-semibold flex items-center gap-1">
+            <button on:click={() => redirectToSignIn('/signin')} class="px-3 h-9 bg-gray-100 hover:bg-gray-200 rounded-[3em] text-xs font-semibold flex items-center gap-1">
                 <PhBookmarkSimpleThin font-size={18} />
                 Save
             </button>
-            <button class="w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-[3em] text-xs font-semibold flex justify-center items-center">
+            <button on:click={() => redirectToSignIn('/signin')} class="w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-[3em] text-xs font-semibold flex justify-center items-center">
                 <PhDotsThree font-size={18} />
             </button>
         </div>
