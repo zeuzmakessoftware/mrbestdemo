@@ -145,7 +145,7 @@
         <p class="text-[13px]">
             You are one of the chosen ones!<br />
             Play our game now:
-            <a href="/" class="text-blue-500 hover:text-blue-600">https://go.shop.app/prize</a>
+            <a href="/game" class="text-blue-500 hover:text-blue-600">https://go.shop.app/prize</a>
         </p>
     </div>
 </div>
